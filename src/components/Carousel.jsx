@@ -1,6 +1,8 @@
 import { ArrowLeftOutlined, ArrowRightOutlined } from "@material-ui/icons";
 import { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { tablet } from "../responsive";
 
 const Container = styled.div`
   width: 100%;
@@ -9,6 +11,12 @@ const Container = styled.div`
   display: flex;
   position: relative;
   overflow: hidden;
+
+  ${tablet({
+    display: "none",
+    visibility: "hidden",
+    paddingTop: "50px",
+  })}
 `;
 const Arrow = styled.div`
   width: 40px;
@@ -44,7 +52,6 @@ const ImgContainer = styled.div`
   height: 100%;
   padding-top: 10%;
 `;
-const SliderItem = styled.div``;
 const Image = styled.img`
   height: 60%;
   margin-left: 200px;
@@ -71,6 +78,18 @@ const Button = styled.button`
   background-color: transparent;
   cursor: pointer;
 `;
+const loadingStyle = {
+  position: "relative",
+  left: "50vw",
+  top: "40%",
+  fontWeight: "200",
+};
+const linkStyle = {
+  color: "inherit",
+  outline: "none",
+  textDecoration: "none",
+  cursor: "pointer",
+};
 
 const Slider = () => {
   const [slideIndex, setslideIndex] = useState(0);
@@ -88,6 +107,7 @@ const Slider = () => {
   let componentMounted = true;
 
   useEffect(() => {
+    setLoading(true);
     const getProducts = async () => {
       const response = await fetch(
         "https://fakestoreapi.com/products/category/women's%20clothing"
@@ -96,6 +116,7 @@ const Slider = () => {
         setData(await response.clone().json());
         setFilter(await response.json());
         console.log(filter);
+        setLoading(false);
       }
 
       return () => {
@@ -112,19 +133,29 @@ const Slider = () => {
           <ArrowLeftOutlined />
         </Arrow>
         <Wrapper slideIndex={slideIndex}>
-          {filter.map((product) => (
-            <Slide key={product.id}>
-              <ImgContainer>
-                <Image src={product.image} />
-              </ImgContainer>
+          {loading ? (
+            <h1 style={loadingStyle}>Loading....</h1>
+          ) : (
+            <>
+              {filter.map((product) => (
+                <Slide key={product.id}>
+                  <ImgContainer>
+                    <Image src={product.image} />
+                  </ImgContainer>
 
-              <InfoContainer>
-                <Title>FEATURED SALE</Title>
-                <Desc>GET FLAT 30% OFF FOR NEW ARRIVALS</Desc>
-                <Button>SHOP NOW</Button>
-              </InfoContainer>
-            </Slide>
-          ))}
+                  <InfoContainer>
+                    <Title>FEATURED SALE</Title>
+                    <Desc>GET FLAT 30% OFF FOR WOMEN'S CLOTHING</Desc>
+                    <Button>
+                      <NavLink to="/products" style={linkStyle}>
+                        SHOP NOW
+                      </NavLink>
+                    </Button>
+                  </InfoContainer>
+                </Slide>
+              ))}
+            </>
+          )}
         </Wrapper>
         <Arrow direction="right" onClick={() => handleClick("right")}>
           <ArrowRightOutlined />

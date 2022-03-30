@@ -104,7 +104,9 @@ const Product = ({ item }) => {
       </ImageContainer>
       <Info>
         <Icon>
-          <ShoppingCartOutlined />
+          <NavLink to={`/products/${item.id}`} style={linkStyle}>
+            <ShoppingCartOutlined />
+          </NavLink>
         </Icon>
         <Icon>
           <NavLink to={`/products/${item.id}`} style={linkStyle}>

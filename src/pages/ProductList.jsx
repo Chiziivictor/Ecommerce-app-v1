@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Products from "../components/Products";
 
 const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;

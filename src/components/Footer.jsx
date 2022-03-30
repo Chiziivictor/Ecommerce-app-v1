@@ -5,7 +5,6 @@ import {
   Phone,
   Pinterest,
   Room,
-  RoomOutlined,
   Twitter,
 } from "@material-ui/icons";
 import styled from "styled-components";
